@@ -21,6 +21,7 @@ class Category extends Model
         return $this->hasMany(Product::class, 'category_id', 'id')
                                 ->whereColumn('last_price', '=', 'best_price')
                                 ->whereColumn('last_price', '<', 'price_goal')
+                                ->where ('status', '=', 1)
                                 ->orderBy('likes', 'desc')
                                 ->take(4);  
     }
@@ -28,6 +29,7 @@ class Category extends Model
     public function categoryProducts()
     {
         return $this->hasMany(Product::class, 'category_id', 'id')
+                                ->where('status', '=', 1)
                                 ->whereColumn('last_price', '<', 'price_goal');  
     }
 }
