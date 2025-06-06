@@ -27,9 +27,9 @@
 <body>
 
 
-  @include('partials._preloader');
+  @include('partials._preloader')
 
-  @include('partials._header');
+  @include('partials._header')
 
   <section class="page-title bg-light py-5">
     <div class="container">

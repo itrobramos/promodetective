@@ -54,6 +54,7 @@ class IndexController extends Controller
                 'affiliate_url' => $product->affiliate_url,
                 'categoria_id' => $product->category_id,
                 'last_price' => $product->last_price,
+                'price_goal' => $product->price_goal,
                 'image_url' => $product->image_url,
                 'asin' => $product->asin,
                 'likes' => $product->likes,

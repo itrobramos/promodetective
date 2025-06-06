@@ -91,13 +91,13 @@
     </defs>
   </svg>
 
-  @include('partials._preloader');
+  @include('partials._preloader')
 
-  @include('partials._nav');
+  @include('partials._nav')
 
-  @include('partials._header');
+  @include('partials._header')
 
-  @include('partials._banner');
+  @include('partials._banner')
 
   @include('partials._categories', ['categories' => $categories])
 

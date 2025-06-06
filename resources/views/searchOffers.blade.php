@@ -26,11 +26,10 @@
 
 <body>
   
-  
-  @include('partials._preloader');
-  
-  @include('partials._header');
-  
+   @include('partials._preloader')
+
+  @include('partials._header')
+
   <section class="page-title bg-light py-5">
     <div class="container">
       <div class="row">
@@ -94,9 +93,13 @@
                           <div class="badge bg-primary px-2 py-1">
                               <i class="fas fa-clock"></i> Mejor precio en 30 días
                           </div>
-                          @else
+                          @elseif ($product['last_price'] < $product['price_goal'] ?? false)
                           <div class="badge bg-danger px-2 py-1">
                               <i class="fas fa-fire"></i> Buen precio
+                          </div>
+                          @else
+                          <div class="badge bg-dark px-2 py-1">
+                              <i class="fas fa-xmark"></i> No es una oferta
                           </div>
                           @endif
                       </div>
