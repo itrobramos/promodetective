@@ -6,5 +6,9 @@ use App\Http\Controllers\IndexController;
 
 Route::get('/', [IndexController::class, 'index'])->name('home');
 Route::get('/categoria/{name}', [IndexController::class, 'categoryOffers'])->name('categoryOffers');
-Route::post('/product/like/{id}', [IndexController::class, 'likeProduct'])->name('product.like');
+Route::post('/product/like/{id}', [IndexController::class, 'likeProduct'])->name('product.like')->middleware('auth');
 Route::get('/search', [App\Http\Controllers\SearchController::class, 'search'])->name('search');
+
+// Google OAuth Routes
+Route::get('auth/google', [App\Http\Controllers\Auth\GoogleController::class, 'redirectToGoogle'])->name('auth.google');
+Route::get('auth/google/callback', [App\Http\Controllers\Auth\GoogleController::class, 'handleGoogleCallback']);
