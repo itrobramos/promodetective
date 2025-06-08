@@ -74,9 +74,7 @@
     <div class="container">
         <div class="row g-4">
             @foreach($result as $product)
-            
-              @include('partials._productCard', ['product' => $product])
-            
+                @include('partials._productCard', ['product' => $product])
             @endforeach
         </div>
     </div>

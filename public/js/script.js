@@ -243,32 +243,44 @@
   });
 
   // Like button functionality
-  document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.btn-like').forEach(button => {
+  document.addEventListener('DOMContentLoaded', function() {    document.querySelectorAll('.btn-like').forEach(button => {
+        // Si ya tiene like, asegurarnos que tenga la clase correcta
+        if (button.classList.contains('already-liked')) {
+            button.querySelector('.heart-icon').style.opacity = '1';
+        }
+
         button.addEventListener('click', async function(e) {
             e.preventDefault();
+            
+            // Si ya tiene like, no hacer nada
+            if (this.classList.contains('already-liked')) {
+                return;
+            }
+
             const productId = this.dataset.productId;
             const likeCount = this.querySelector('.likes-count');
             
-            try {
-                const response = await fetch(`/product/like/${productId}`, {
+            try {                const response = await fetch(`/product/like/${productId}`, {
                     method: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                         'Accept': 'application/json'
                     }
                 });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    // Update likes count
-                    likeCount.textContent = data.likes;
-                    
+                const data = await response.json();
+                
+                if (response.status === 401) {
+                    // Usuario no autenticado, redirigir a login
+                    window.location.href = '/auth/google';
+                } else if (response.status === 400 && data.has_liked) {
+                    // Ya dio like antes
+                    this.classList.add('already-liked');
+                    button.querySelector('.heart-icon').style.opacity = '1';
+                } else if (response.ok) {
                     // Add animation and liked class
                     this.classList.add('liked');
-                    setTimeout(() => {
-                        this.classList.remove('liked');
-                    }, 300);
+                    this.classList.add('already-liked');
+                    button.querySelector('.heart-icon').style.opacity = '1';
                 }
             } catch (error) {
                 console.error('Error:', error);

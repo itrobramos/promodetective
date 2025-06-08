@@ -27,14 +27,13 @@ class IndexController extends Controller
                     'image_url' => $product->image_url,
                     'asin' => $product->asin,
                     'likes' => $product->likes,
+                    'has_liked' => auth()->check() ? $product->isLikedByUser(auth()->id()) : false,
                     'is_lowest_price' => $product->last_price == $product->best_price,
                     'is_30_days_low' => $product->last_price < $product->price_goal && $product->last_price == $product->{'30days'}
     
                 ];
             })->toArray();
         }
-
-
 
         return view('index', compact('categories', 'result'));
     }
@@ -58,6 +57,7 @@ class IndexController extends Controller
                 'image_url' => $product->image_url,
                 'asin' => $product->asin,
                 'likes' => $product->likes,
+                'has_liked' => auth()->check() ? $product->isLikedByUser(auth()->id()) : false,
                 'is_lowest_price' => $product->last_price == $product->best_price,
                 'is_30_days_low' => $product->last_price < $product->price_goal && $product->last_price == $product->{'30days'}
             ];
@@ -69,7 +69,24 @@ class IndexController extends Controller
     public function likeProduct($id)
     {
         $product = Product::findOrFail($id);
+        $user = auth()->user();
+        
+        // Verificar si el usuario ya dio like
+        if ($product->isLikedByUser($user->id)) {
+            return response()->json([
+                'error' => 'Ya has dado like a este producto',
+                'likes' => $product->likes,
+                'has_liked' => true
+            ], 400);
+        }
+
+        // Agregar el like
+        $product->likedByUsers()->attach($user->id);
         $product->increment('likes');
-        return response()->json(['likes' => $product->likes]);
+
+        return response()->json([
+            'likes' => $product->likes,
+            'has_liked' => true
+        ]);
     }
 }

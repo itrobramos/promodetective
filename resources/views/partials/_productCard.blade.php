@@ -18,12 +18,10 @@
                     <i class="fas fa-xmark"></i> No es una oferta
                 </div>
                 @endif
-            </div>
-            <button class="btn-like position-absolute top-0 end-0 m-3 bg-white rounded-circle border-0 shadow-sm" 
-                    data-product-id="{{$product['id']}}" 
-                    data-likes="{{$product['likes'] ?? 0}}">
-                <i class="fas fa-heart"></i>
-                <span class="likes-count">{{$product['likes'] ?? 0}}</span>
+            </div>            <button class="btn-like position-absolute top-0 end-0 m-3 {{$product['has_liked'] ? 'already-liked' : ''}}" 
+                    data-product-id="{{$product['id']}}"
+                    aria-label="Me gusta">
+                <iconify-icon class="heart-icon" icon="mdi:cards-heart"></iconify-icon>
             </button>
             <a href="{{$product['affiliate_url']}}" target="_blank">
                 <img src="{{$product['image_url']}}" class="card-img-top p-3 imgProduct" alt="{{$product['friendly_name']}}">
@@ -43,12 +41,11 @@
             <div class="d-flex gap-2 mt-3">
                 <a href="{{$product['affiliate_url']}}" target="_blank" class="btn btn-outline-primary flex-grow-1">
                     Ver en Amazon
-                </a>
-                <button class="btn btn-outline-secondary share-button" 
+                </a>                <button class="btn btn-outline-secondary share-button" 
                         data-url="{{$product['affiliate_url']}}" 
                         data-title="{{$product['friendly_name']}}"
                         title="Compartir producto">
-                    <i class="fas fa-share-alt"></i>
+                    <iconify-icon class="share-icon" icon="mdi:share"></iconify-icon>
                 </button>
             </div>
         </div>

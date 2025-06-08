@@ -22,7 +22,7 @@
                 <div class="swiper-wrapper">
 
                     @foreach ($products as $product)
-                        @include('partials._productCard', ['product' => $product]);
+                        @include('partials._productCard', ['product' => $product])
                     @endforeach
 
                 </div>
