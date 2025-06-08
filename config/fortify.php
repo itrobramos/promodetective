@@ -136,12 +136,23 @@ return [
         Features::resetPasswords(),
         // Features::emailVerification(),
         Features::updateProfileInformation(),
-        Features::updatePasswords(),
-        Features::twoFactorAuthentication([
-            'confirm' => true,
-            'confirmPassword' => true,
-            // 'window' => 0,
-        ]),
+        // Features::updatePasswords(),
+        // Features::twoFactorAuthentication([
+        //     'confirm' => true,
+        //     'confirmPassword' => true,
+        //     // 'window' => 0,
+        // ]),
+        // Features::logoutOtherBrowserSessions(),
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Desactivar vistas específicas
+    |--------------------------------------------------------------------------
+    |
+    | Aquí puedes desactivar rutas específicas de vistas que no quieras mostrar
+    |
+    */
+    'views' => false, // Esto desactiva todas las vistas por defecto de Fortify
 
 ];

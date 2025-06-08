@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\IndexController;
 
+// Redireccionar /login a la página principal
+Route::redirect('/login', '/', 301);
 
 Route::get('/', [IndexController::class, 'index'])->name('home');
 Route::get('/categoria/{name}', [IndexController::class, 'categoryOffers'])->name('categoryOffers');
