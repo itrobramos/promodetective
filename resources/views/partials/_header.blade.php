@@ -1,15 +1,14 @@
 <header>
   <div class="container py-2">
     <div class="row py-4 pb-0 pb-sm-4 align-items-center ">
-      
-      <div class="col-sm-4 col-lg-3 text-center text-sm-start">
+        <div class="col-sm-4 col-lg-3 text-center text-sm-start">
         <div class="main-logo">
           <a href="{{ route('home') }}" class="d-block">
             <img src="{{ asset('images/logo.jpg') }}" alt="logo" class="img-fluid">
           </a>
         </div>
       </div>
-        <div class="col-sm-6 offset-sm-2 offset-md-0 col-lg-5 d-none d-lg-block">
+        <div class="col-sm-6 offset-sm-2 offset-md-0 col-lg-5">
         <div class="search-bar border rounded-2 px-3 border-dark-subtle">
           <form id="search-form" class="text-center d-flex align-items-center" action="{{ route('search') }}" method="GET">
             <input type="text" name="query" class="form-control border-0 bg-transparent" 
@@ -23,9 +22,7 @@
             </button>
           </form>
         </div>
-      </div>
-
-      <div class="col-lg-4 d-none d-lg-block text-end">
+      </div>      <div class="col-lg-4 text-end">
         <ul class="d-flex list-unstyled m-0 align-items-center justify-content-end">
           @auth
           <a href="{{ route('profile.show') }}" class="mx-3">
