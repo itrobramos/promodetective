@@ -20,13 +20,7 @@
                     <i class="fas fa-xmark"></i> No es una oferta
                 </div>
                 @endif
-            </div>            
-            <button class="btn-like position-absolute top-0 end-0 m-3 {{$product['has_liked'] ? 'already-liked' : ''}}" 
-                    data-product-id="{{$product['id']}}"
-                    aria-label="Me gusta">
-                <iconify-icon class="heart-icon" icon="mdi:cards-heart"></iconify-icon>
-            </button>
-            <a href="{{$product['affiliate_url']}}" target="_blank">
+            </div>              <a href="{{$product['affiliate_url']}}" target="_blank">
                 <img src="{{$product['image_url']}}" class="card-img-top p-3 imgProduct" alt="{{$product['friendly_name']}}">
             </a>
         </div>
@@ -36,8 +30,15 @@
             </a>            
             <div class="text-center mt-3">
                 <h4 class="text-primary mb-3 fw-bold">${{$product['last_price']}}</h4>
-            </div>
-            <div class="d-flex justify-content-center gap-2 mb-3">
+            </div>            <div class="d-flex justify-content-center gap-2 mb-3">
+                <button class="btn-like btn btn-outline-danger btn-sm rounded-circle p-0 d-flex align-items-center justify-content-center {{$product['has_liked'] ? 'already-liked' : ''}}" 
+                        style="width: 35px; height: 35px;"
+                        data-product-id="{{$product['id']}}"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        title="Me gusta">
+                    <iconify-icon class="heart-icon" icon="mdi:cards-heart"></iconify-icon>
+                </button>
                 <button class="btn btn-outline-primary btn-sm rounded-circle p-0 d-flex align-items-center justify-content-center openModalBtn"
                         style="width: 35px; height: 35px;"
                         data-asin="{{$product['asin']}}"
@@ -46,7 +47,7 @@
                         title="Ver gráfica de precios">
                     <i class="fas fa-chart-bar"></i>
                 </button>
-                    <button class="btn btn-outline-secondary btn-sm rounded-circle d-flex align-items-center justify-content-center share-button" 
+                <button class="btn btn-outline-secondary btn-sm rounded-circle p-0 d-flex align-items-center justify-content-center share-button" 
                             style="width: 35px; height: 35px;"
                             data-url="{{$product['affiliate_url']}}" 
                             data-title="{{$product['friendly_name']}}"
