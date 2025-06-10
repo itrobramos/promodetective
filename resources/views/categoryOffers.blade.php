@@ -148,7 +148,7 @@
             
             <!-- Products Grid -->
             <div class="col-lg-9">
-                <div class="row g-4">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-3 g-4">
                     @foreach($result as $product)
                         @include('partials._productCard', ['product' => $product])
                     @endforeach
