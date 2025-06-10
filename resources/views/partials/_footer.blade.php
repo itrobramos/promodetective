@@ -2,10 +2,9 @@
   <footer id="footer" class="my-5">
     <div class="container py-5 my-5">
       <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-4">          
           <div class="footer-menu">
-            <img src="{{asset('images/logo.png')}}" alt="logo">
-            <p class="blog-paragraph fs-6 mt-3">Subscribe to our newsletter to get updates about our grand offers.</p>
+            <img src="{{asset('images/logo.jpg')}}" alt="PromoDetective" style="max-width: 200px;">
             <div class="social-links">
               <ul class="d-flex list-unstyled gap-2">
                 <li class="social">
@@ -37,64 +36,51 @@
               </ul>
             </div>
           </div>
-        </div>
-        <div class="col-md-3">
+        </div>        
+        <div class="col-md-4">
           <div class="footer-menu">
-            <h3>Quick Links</h3>
+            <h3>Enlaces Rápidos</h3>
             <ul class="menu-list list-unstyled">
               <li class="menu-item">
-                <a href="#" class="nav-link">Home</a>
+                <a href="#" class="nav-link">Inicio</a>
               </li>
               <li class="menu-item">
-                <a href="#" class="nav-link">About us</a>
+                <a href="#" class="nav-link">Nosotros</a>
               </li>
               <li class="menu-item">
-                <a href="#" class="nav-link">Offer </a>
+                <a href="#" class="nav-link">Ofertas</a>
               </li>
               <li class="menu-item">
-                <a href="#" class="nav-link">Services</a>
+                <a href="#" class="nav-link">Servicios</a>
               </li>
               <li class="menu-item">
-                <a href="#" class="nav-link">Conatct Us</a>
+                <a href="#" class="nav-link">Contacto</a>
               </li>
             </ul>
           </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">          
           <div class="footer-menu">
-            <h3>Help Center</h5>
+            <h3>Centro de Ayuda</h3>
               <ul class="menu-list list-unstyled">
                 <li class="menu-item">
-                  <a href="#" class="nav-link">FAQs</a>
+                  <a href="#" class="nav-link">Preguntas Frecuentes</a>
                 </li>
                 <li class="menu-item">
-                  <a href="#" class="nav-link">Payment</a>
+                  <a href="#" class="nav-link">Pagos</a>
                 </li>
                 <li class="menu-item">
-                  <a href="#" class="nav-link">Returns & Refunds</a>
+                  <a href="#" class="nav-link">Política de Privacidad</a>
                 </li>
                 <li class="menu-item">
-                  <a href="#" class="nav-link">Checkout</a>
+                  <a href="#" class="nav-link">Términos y Condiciones</a>
                 </li>
                 <li class="menu-item">
-                  <a href="#" class="nav-link">Delivery Information</a>
+                  <a href="#" class="nav-link">Cómo Funciona</a>
                 </li>
               </ul>
           </div>
         </div>
-        <div class="col-md-3">
-          <div>
-            <h3>Our Newsletter</h3>
-            <p class="blog-paragraph fs-6">Subscribe to our newsletter to get updates about our grand offers.</p>
-            <div class="search-bar border rounded-pill border-dark-subtle px-2">
-              <form class="text-center d-flex align-items-center" action="" method="">
-                <input type="text" class="form-control border-0 bg-transparent" placeholder="Enter your email here" />
-                <iconify-icon class="send-icon" icon="tabler:location-filled"></iconify-icon>
-              </form>
-            </div>
-          </div>
-        </div>
-
       </div>
     </div>
   </footer>
@@ -102,13 +88,12 @@
   <div id="footer-bottom">
     <div class="container">
       <hr class="m-0">
-      <div class="row mt-3">
+      <div class="row mt-3">        
         <div class="col-md-6 copyright">
-          <p class="secondary-font">© 2023 Waggy. All rights reserved.</p>
+          <p class="secondary-font">© 2025 PromoDetective. Todos los derechos reservados.</p>
         </div>
         <div class="col-md-6 text-md-end">
-          <p class="secondary-font">Free HTML Template by <a href="https://templatesjungle.com/" target="_blank"
-              class="text-decoration-underline fw-bold text-black-50"> TemplatesJungle</a> </p>
+          <p class="secondary-font">Desarrollado por RideRunner Solutions</p>
         </div>
       </div>
     </div>
