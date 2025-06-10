@@ -41,7 +41,12 @@ class IndexController extends Controller
     public function categoryOffers($name)
     {
         $category = Category::where('name', $name)->first();
-        $subcategories = Category::where('parent_category_id', $category->id)->get();
+        $subcategories = Category::where('parent_category_id', $category->id)
+            ->get()
+            ->map(function($subcategory) {
+                $subcategory->products_count = $subcategory->categoryProducts()->count();
+                return $subcategory;
+            });
 
         //order by likes 
         $products = $category->categoryProducts;

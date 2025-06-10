@@ -181,12 +181,10 @@
 
     });
 
-  }); // End of a document
-
-  // Product filter functionality
+  }); // End of a document    // Product filter functionality
   document.addEventListener('DOMContentLoaded', function() {
     const filterButtons = document.querySelectorAll('.filter-tags button');
-    const productsContainer = document.querySelector('.products-grid .row');
+    const productsContainer = document.querySelector('.products-grid .col-lg-9 .row');
     
     filterButtons.forEach(button => {
         button.addEventListener('click', () => {
@@ -196,7 +194,7 @@
             button.classList.add('active');
 
             const filter = button.getAttribute('data-filter');
-            const productCards = document.querySelectorAll('.product-card').forEach(card => {
+            const productCards = document.querySelectorAll('.products-grid .col-lg-9 .product-card').forEach(card => {
                 const parentCol = card.closest('.col-12');
                 
                 if (filter === 'all') {
@@ -229,7 +227,7 @@
             });
 
             // Reorder visible cards
-            const visibleCards = Array.from(document.querySelectorAll('.products-grid .row > div:not(.d-none)'));
+            const visibleCards = Array.from(document.querySelectorAll('.products-grid .col-lg-9 .row > div:not(.d-none)'));
             visibleCards.forEach(card => productsContainer.appendChild(card));
 
             // Trigger animation for visible cards
