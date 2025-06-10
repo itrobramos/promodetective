@@ -27,19 +27,6 @@ class IndexController extends Controller
             foreach ($subcategories as $subcategory) {
                 $products = $products->concat($subcategory->offerProducts);
             }
-            
-            // Apply sorting based on order parameter
-            switch($orderBy) {
-                case 'price_asc':
-                    $products = $products->sortBy('last_price');
-                    break;
-                case 'price_desc':
-                    $products = $products->sortByDesc('last_price');
-                    break;
-                default:
-                    $products = $products->sortByDesc('likes');
-            }
-            
             $result[$category->name] = $products->map(function ($product) {
                 return [
                     'id' => $product->id,
@@ -80,6 +67,22 @@ class IndexController extends Controller
         // Add products from subcategories
         foreach ($subcategories as $subcategory) {
             $products = $products->concat($subcategory->categoryProducts);
+        }
+        
+        // Apply price range filters if they exist
+        $minPrice = $request->input('min_price');
+        $maxPrice = $request->input('max_price');
+        
+        if (!is_null($minPrice)) {
+            $products = $products->filter(function($product) use ($minPrice) {
+                return $product->last_price >= $minPrice;
+            });
+        }
+        
+        if (!is_null($maxPrice)) {
+            $products = $products->filter(function($product) use ($maxPrice) {
+                return $product->last_price <= $maxPrice;
+            });
         }
         
         // Apply sorting based on order parameter

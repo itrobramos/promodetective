@@ -120,9 +120,9 @@
                         <div class="mb-3">
                             <label class="form-label fw-bold">Rango de Precio</label>
                             <div class="d-flex align-items-center gap-2">
-                                <input type="number" class="form-control" placeholder="Min">
+                                <input type="number" id="minPrice" class="form-control" placeholder="Min" value="{{ request('min_price') }}">
                                 <span>-</span>
-                                <input type="number" class="form-control" placeholder="Max">
+                                <input type="number" id="maxPrice" class="form-control" placeholder="Max" value="{{ request('max_price') }}">
                             </div>
                         </div>
                         
@@ -346,9 +346,24 @@
         applyFilters.addEventListener('click', function() {
             const currentUrl = new URL(window.location.href);
             const selectedOrder = orderSelect.value;
+            const minPrice = document.getElementById('minPrice').value;
+            const maxPrice = document.getElementById('maxPrice').value;
             
-            // Actualizar o agregar el parámetro de orden
+            // Actualizar o agregar los parámetros
             currentUrl.searchParams.set('order', selectedOrder);
+            
+            // Solo agregar los parámetros de precio si tienen valor
+            if (minPrice) {
+                currentUrl.searchParams.set('min_price', minPrice);
+            } else {
+                currentUrl.searchParams.delete('min_price');
+            }
+            
+            if (maxPrice) {
+                currentUrl.searchParams.set('max_price', maxPrice);
+            } else {
+                currentUrl.searchParams.delete('max_price');
+            }
             
             // Redirigir a la nueva URL con los parámetros
             window.location.href = currentUrl.toString();
