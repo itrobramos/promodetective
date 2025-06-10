@@ -59,4 +59,13 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    /**
+     * Get the products that the user has liked.
+     */
+    public function likes()
+    {
+        return $this->belongsToMany(Product::class, 'product_user_likes')
+                    ->withTimestamps();
+    }
 }
