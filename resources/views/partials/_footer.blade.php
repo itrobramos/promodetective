@@ -14,25 +14,9 @@
                 </li>
                 <li class="social">
                   <a href="#">
-                    <iconify-icon class="social-icon" icon="ri:twitter-fill"></iconify-icon>
-                  </a>
-                </li>
-                <li class="social">
-                  <a href="#">
-                    <iconify-icon class="social-icon" icon="ri:pinterest-fill"></iconify-icon>
-                  </a>
-                </li>
-                <li class="social">
-                  <a href="#">
                     <iconify-icon class="social-icon" icon="ri:instagram-fill"></iconify-icon>
                   </a>
                 </li>
-                <li class="social">
-                  <a href="#">
-                    <iconify-icon class="social-icon" icon="ri:youtube-fill"></iconify-icon>
-                  </a>
-                </li>
-
               </ul>
             </div>
           </div>
