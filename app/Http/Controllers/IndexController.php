@@ -12,12 +12,23 @@ class IndexController extends Controller
     {
         $categories = Category::where('parent_category_id', null)->where('active', 1)->get();
 
-
         $result = [];
 
         foreach ($categories as $category) {
+            // Get products from main category and subcategories
+            $products = collect();
             
-            $result[$category->name] = $category->offerProducts->map(function ($product) {
+            // Add products from main category
+            $products = $products->concat($category->offerProducts);
+            
+            // Get and add products from subcategories
+            $subcategories = Category::where('parent_category_id', $category->id)->get();
+            foreach ($subcategories as $subcategory) {
+                $products = $products->concat($subcategory->offerProducts);
+            }
+            
+            // Sort by likes and map to array format
+            $result[$category->name] = $products->sortByDesc('likes')->map(function ($product) {
                 return [
                     'id' => $product->id,
                     'friendly_name' => $product->friendly_name,
@@ -30,7 +41,6 @@ class IndexController extends Controller
                     'has_liked' => auth()->check() ? $product->isLikedByUser(auth()->id()) : false,
                     'is_lowest_price' => $product->last_price == $product->best_price,
                     'is_30_days_low' => $product->last_price < $product->price_goal && $product->last_price == $product->{'30days'}
-    
                 ];
             })->toArray();
         }
