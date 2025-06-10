@@ -128,15 +128,17 @@
                         
                         <div class="mb-4">
                             <label class="form-label fw-bold">Ordenar por</label>
-                            <select class="form-select">
-                                <option>Más relevantes</option>
-                                <option>Menor precio</option>
-                                <option>Mayor precio</option>
-                                <option>Más recientes</option>
+                            <select class="form-select" id="orderSelect">
+                                <option value="likes">Más relevantes</option>
+                                <option value="price_asc" {{ request('order') == 'price_asc' ? 'selected' : '' }}>Menor precio</option>
+                                <option value="price_desc" {{ request('order') == 'price_desc' ? 'selected' : '' }}>Mayor precio</option>
+                                <option value="name_asc" {{ request('order') == 'name_asc' ? 'selected' : '' }}>Nombre A - Z</option>
+                                <option value="name_desc" {{ request('order') == 'name_desc' ? 'selected' : '' }}>Nombre Z - A</option>
                             </select>
                         </div>
 
-                        <button class="btn btn-outline-primary w-100 rounded-pill d-flex align-items-center justify-content-center gap-2">
+                        <button class="btn btn-outline-primary w-100 rounded-pill d-flex align-items-center justify-content-center gap-2" 
+                                id="applyFilters">
                             <i class="fas fa-filter"></i>
                             <span>Aplicar filtros</span>
                         </button>
@@ -337,6 +339,22 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Manejo del ordenamiento
+        const orderSelect = document.getElementById('orderSelect');
+        const applyFilters = document.getElementById('applyFilters');
+
+        applyFilters.addEventListener('click', function() {
+            const currentUrl = new URL(window.location.href);
+            const selectedOrder = orderSelect.value;
+            
+            // Actualizar o agregar el parámetro de orden
+            currentUrl.searchParams.set('order', selectedOrder);
+            
+            // Redirigir a la nueva URL con los parámetros
+            window.location.href = currentUrl.toString();
+        });
+
+        // Modal code
         const modal = document.getElementById("myModal");
         const openModalBtns = document.querySelectorAll(".openModalBtn");
         const closeModalBtn = document.querySelector(".close");

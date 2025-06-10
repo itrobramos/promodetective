@@ -8,9 +8,10 @@ use Illuminate\Http\Request;
 
 class IndexController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $categories = Category::where('parent_category_id', null)->where('active', 1)->get();
+        $orderBy = $request->input('order', 'likes'); // default order by likes
 
         $result = [];
 
@@ -27,8 +28,19 @@ class IndexController extends Controller
                 $products = $products->concat($subcategory->offerProducts);
             }
             
-            // Sort by likes and map to array format
-            $result[$category->name] = $products->sortByDesc('likes')->map(function ($product) {
+            // Apply sorting based on order parameter
+            switch($orderBy) {
+                case 'price_asc':
+                    $products = $products->sortBy('last_price');
+                    break;
+                case 'price_desc':
+                    $products = $products->sortByDesc('last_price');
+                    break;
+                default:
+                    $products = $products->sortByDesc('likes');
+            }
+            
+            $result[$category->name] = $products->map(function ($product) {
                 return [
                     'id' => $product->id,
                     'friendly_name' => $product->friendly_name,
@@ -48,9 +60,10 @@ class IndexController extends Controller
         return view('index', compact('categories', 'result'));
     }
 
-    public function categoryOffers($name)
+    public function categoryOffers($name, Request $request)
     {
         $category = Category::where('name', $name)->first();
+        $orderBy = $request->input('order', 'likes'); // default order by likes
         $subcategories = Category::where('parent_category_id', $category->id)
             ->get()
             ->map(function($subcategory) {
@@ -69,8 +82,23 @@ class IndexController extends Controller
             $products = $products->concat($subcategory->categoryProducts);
         }
         
-        // Order by likes
-        $products = $products->sortByDesc('likes');
+        // Apply sorting based on order parameter
+        switch($orderBy) {
+            case 'name_asc':
+                $products = $products->sortBy('friendly_name');
+                break;
+            case 'name_desc':
+                $products = $products->sortBy('friendly_name')->reverse();
+                break;
+            case 'price_asc':
+                $products = $products->sortBy('last_price');
+                break;
+            case 'price_desc':
+                $products = $products->sortByDesc('last_price');
+                break;
+            default:
+                $products = $products->sortByDesc('likes');
+        }
 
         $result = $products->map(function ($product) {
             return [
