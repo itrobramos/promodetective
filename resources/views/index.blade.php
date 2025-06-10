@@ -46,7 +46,7 @@
 
   
 
-  <section id="banner-2" class="my-3" style="background: #F9F3EC;">
+  {{-- <section id="banner-2" class="my-3" style="background: #F9F3EC;">
     <div class="container">
       <div class="row flex-row-reverse banner-content align-items-center">
         <div class="img-wrapper col-12 col-md-6">
@@ -65,7 +65,7 @@
 
       </div>
     </div>
-  </section>
+  </section> --}}
 
   <section id="insta" class="my-5">
     <div class="row g-0 py-5">
