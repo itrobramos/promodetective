@@ -48,8 +48,18 @@ class IndexController extends Controller
                 return $subcategory;
             });
 
-        //order by likes 
-        $products = $category->categoryProducts;
+        // Get products from main category and subcategories
+        $products = collect();
+        
+        // Add products from main category
+        $products = $products->concat($category->categoryProducts);
+        
+        // Add products from subcategories
+        foreach ($subcategories as $subcategory) {
+            $products = $products->concat($subcategory->categoryProducts);
+        }
+        
+        // Order by likes
         $products = $products->sortByDesc('likes');
 
         $result = $products->map(function ($product) {

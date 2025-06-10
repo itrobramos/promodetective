@@ -33,18 +33,18 @@
             </a>
             <div class="d-flex justify-content-between align-items-center mt-3">
                 <h4 class="text-primary mb-0">${{$product['last_price']}}</h4>
-                <button class="btn btn-primary rounded-2 d-flex align-items-center gap-2 openModalBtn" data-asin="{{$product['asin']}}">
+                <button class="btn btn-primary btn-sm rounded-2 d-flex align-items-center gap-1 openModalBtn" data-asin="{{$product['asin']}}">
                     <i class="fas fa-chart-bar"></i>
-                    <span></span>
                 </button>
             </div>
             <div class="d-flex gap-2 mt-3">
-                <a href="{{$product['affiliate_url']}}" target="_blank" class="btn btn-outline-primary flex-grow-1">
+                <a href="{{$product['affiliate_url']}}" target="_blank" class="btn btn-outline-primary btn-sm flex-grow-1">
                     Ver en Amazon
-                </a>                <button class="btn btn-outline-secondary share-button" 
-                        data-url="{{$product['affiliate_url']}}" 
-                        data-title="{{$product['friendly_name']}}"
-                        title="Compartir producto">
+                </a>
+                <button class="btn btn-outline-secondary btn-sm share-button" 
+                    data-url="{{$product['affiliate_url']}}" 
+                    data-title="{{$product['friendly_name']}}"
+                    title="Compartir producto">
                     <iconify-icon class="share-icon" icon="mdi:share"></iconify-icon>
                 </button>
             </div>
