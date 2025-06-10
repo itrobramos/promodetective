@@ -41,6 +41,7 @@ class IndexController extends Controller
     public function categoryOffers($name)
     {
         $category = Category::where('name', $name)->first();
+        $subcategories = Category::where('parent_category_id', $category->id)->get();
 
         //order by likes 
         $products = $category->categoryProducts;
@@ -63,7 +64,7 @@ class IndexController extends Controller
             ];
         })->toArray();
 
-        return view('categoryOffers', compact('category', 'result'));
+        return view('categoryOffers', compact('category', 'result', 'subcategories'));
     }
 
     public function likeProduct($id)

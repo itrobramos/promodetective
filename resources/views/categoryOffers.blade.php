@@ -39,6 +39,19 @@
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb justify-content-center">
               <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Inicio</a></li>
+              @if($category && $category->parent_category_id)
+                @php
+                  $parentCategory = \App\Models\Category::find($category->parent_category_id);
+                  $breadcrumb = collect();
+                  while($parentCategory) {
+                    $breadcrumb->push($parentCategory);
+                    $parentCategory = \App\Models\Category::find($parentCategory->parent_category_id);
+                  }
+                @endphp
+                @foreach($breadcrumb->reverse() as $parent)
+                  <li class="breadcrumb-item"><a href="{{ route('categoryOffers', ['name' => $parent->name]) }}" class="text-decoration-none">{{ $parent->name }}</a></li>
+                @endforeach
+              @endif
               <li class="breadcrumb-item active" aria-current="page">{{ $category->name ?? 'Categoría' }}</li>
             </ol>
           </nav>
@@ -72,10 +85,73 @@
 
   <section class="products-grid py-5">
     <div class="container">
-        <div class="row g-4">
-            @foreach($result as $product)
-                @include('partials._productCard', ['product' => $product])
-            @endforeach
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-3 mb-4">
+                @if($subcategories && count($subcategories) > 0)
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title mb-0">Subcategorías</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <ul class="list-group list-group-flush">
+                            @foreach($subcategories as $subcategory)
+                            <li class="list-group-item">
+                                <a href="{{ route('categoryOffers', ['name' => $subcategory->name]) }}" 
+                                   class="text-decoration-none text-dark d-flex justify-content-between align-items-center">
+                                    {{ $subcategory->name }}
+                                    <span class="badge bg-primary rounded-pill">
+                                        {{ $subcategory->products_count ?? 0 }}
+                                    </span>
+                                </a>
+                            </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+                @endif
+
+                <!-- Filtros adicionales -->
+                <div class="card border-0 shadow-sm mt-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title mb-0">Filtros</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Rango de Precio</label>
+                            <div class="d-flex align-items-center gap-2">
+                                <input type="number" class="form-control" placeholder="Min">
+                                <span>-</span>
+                                <input type="number" class="form-control" placeholder="Max">
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Ordenar por</label>
+                            <select class="form-select">
+                                <option>Más relevantes</option>
+                                <option>Menor precio</option>
+                                <option>Mayor precio</option>
+                                <option>Más recientes</option>
+                            </select>
+                        </div>
+
+                        <button class="btn btn-outline-primary w-100 rounded-pill d-flex align-items-center justify-content-center gap-2">
+                            <i class="fas fa-filter"></i>
+                            <span>Aplicar filtros</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Products Grid -->
+            <div class="col-lg-9">
+                <div class="row g-4">
+                    @foreach($result as $product)
+                        @include('partials._productCard', ['product' => $product])
+                    @endforeach
+                </div>
+            </div>
         </div>
     </div>
 </section>
