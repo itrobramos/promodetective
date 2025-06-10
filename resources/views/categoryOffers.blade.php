@@ -16,6 +16,7 @@
   <link href="{{asset('css/bootstrap.css')}}" rel="stylesheet">
   <link href="{{asset('css/vendor.css')}}" rel="stylesheet">
   <link href="{{asset('css/style.css')}}" rel="stylesheet">
+  <link href="{{asset('css/pagination.css')}}" rel="stylesheet">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -152,6 +153,11 @@
                     @foreach($result as $product)
                         @include('partials._productCard', ['product' => $product])
                     @endforeach
+                </div>
+                
+                <!-- Pagination -->
+                <div class="d-flex justify-content-center mt-5">
+                    {{ $result->links('vendor.pagination.custom') }}
                 </div>
             </div>
         </div>

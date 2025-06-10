@@ -103,7 +103,8 @@ class IndexController extends Controller
                 $products = $products->sortByDesc('likes');
         }
 
-        $result = $products->map(function ($product) {
+        // Convert to collection and map before paginating
+        $mappedProducts = $products->map(function ($product) {
             return [
                 'id' => $product->id,
                 'friendly_name' => $product->friendly_name,
@@ -118,7 +119,16 @@ class IndexController extends Controller
                 'is_lowest_price' => $product->last_price == $product->best_price,
                 'is_30_days_low' => $product->last_price < $product->price_goal && $product->last_price == $product->{'30days'}
             ];
-        })->toArray();
+        });
+        
+        // Paginate the mapped products
+        $result = new \Illuminate\Pagination\LengthAwarePaginator(
+            $mappedProducts->forPage($request->page ?? 1, 20),
+            $mappedProducts->count(),
+            20,
+            $request->page ?? 1,
+            ['path' => $request->url(), 'query' => $request->query()]
+        );
 
         return view('categoryOffers', compact('category', 'result', 'subcategories'));
     }
