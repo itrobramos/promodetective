@@ -10,6 +10,7 @@ Route::redirect('/login', '/', 301);
 Route::get('/', [IndexController::class, 'index'])->name('home');
 Route::get('/categoria/{name}', [IndexController::class, 'categoryOffers'])->name('categoryOffers');
 Route::post('/product/like/{id}', [IndexController::class, 'likeProduct'])->name('product.like')->middleware('auth');
+Route::delete('/product/like/{id}', [IndexController::class, 'unlikeProduct'])->name('product.unlike')->middleware('auth');
 Route::get('/search', [App\Http\Controllers\SearchController::class, 'search'])->name('search');
 
 // Rutas de perfil de usuario

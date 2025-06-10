@@ -156,4 +156,28 @@ class IndexController extends Controller
             'has_liked' => true
         ]);
     }
+
+    public function unlikeProduct($id)
+    {
+        $product = Product::findOrFail($id);
+        $user = auth()->user();
+        
+        // Verificar si el usuario realmente dio like
+        if (!$product->isLikedByUser($user->id)) {
+            return response()->json([
+                'error' => 'No has dado like a este producto',
+                'likes' => $product->likes,
+                'has_liked' => false
+            ], 400);
+        }
+
+        // Quitar el like
+        $product->likedByUsers()->detach($user->id);
+        $product->decrement('likes');
+
+        return response()->json([
+            'likes' => $product->likes,
+            'has_liked' => false
+        ]);
+    }
 }

@@ -249,6 +249,43 @@
         const iframe = document.getElementById("dynamicIframe");
         const productTitle = document.getElementById("productTitle");
 
+        // Manejo de likes
+        document.querySelectorAll('.btn-like').forEach(btn => {
+            btn.addEventListener('click', async function() {
+                if (!this.dataset.productId) return;
+
+                const isLiked = this.classList.contains('already-liked');
+                const productId = this.dataset.productId;
+                const method = isLiked ? 'DELETE' : 'POST';
+                const url = isLiked ? `/product/like/${productId}` : `/product/like/${productId}`;
+
+                try {
+                    const response = await fetch(url, {
+                        method: method,
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                            'Accept': 'application/json'
+                        }
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        this.classList.toggle('already-liked');
+                        // Actualizar el contador de likes si existe
+                        const likesCounter = this.querySelector('.likes-count');
+                        if (likesCounter) {
+                            likesCounter.textContent = data.likes;
+                        }
+                    } else {
+                        console.error('Error:', data.error);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            });
+        });
+
         modal.style.cssText = `
             display: none;
             position: fixed;
