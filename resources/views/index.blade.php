@@ -11,6 +11,10 @@
   <meta name="author" content="">
   <meta name="keywords" content="">
   <meta name="description" content="">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <script>
+    window.csrfToken = '{{ csrf_token() }}';
+  </script>
 
   <link href="{{asset('css/swiper.css')}}" rel="stylesheet">
   <link href="{{asset('css/bootstrap.css')}}" rel="stylesheet">

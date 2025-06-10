@@ -249,14 +249,16 @@
 
         button.addEventListener('click', async function(e) {
             e.preventDefault();
-            
-            // Si ya tiene like, no hacer nada
-            if (this.classList.contains('already-liked')) {
+              // Si ya tiene like, no hacer nada
+            if (this.classList.contains('already-liked') || this.classList.contains('loading')) {
                 return;
             }
 
             const productId = this.dataset.productId;
             const likeCount = this.querySelector('.likes-count');
+            
+            // Add loading state
+            this.classList.add('loading');
             
             try {                const response = await fetch(`/product/like/${productId}`, {
                     method: 'POST',
@@ -279,9 +281,11 @@
                     this.classList.add('liked');
                     this.classList.add('already-liked');
                     button.querySelector('.heart-icon').style.opacity = '1';
-                }
-            } catch (error) {
+                }            } catch (error) {
                 console.error('Error:', error);
+            } finally {
+                // Remove loading state regardless of success or failure
+                this.classList.remove('loading');
             }
         });
     });
