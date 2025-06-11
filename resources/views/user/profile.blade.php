@@ -33,8 +33,8 @@
 
     .profile-sidebar .nav-link:hover,
     .profile-sidebar .nav-link.active {
-      color: var(--bs-primary);
-      background-color: rgba(var(--bs-primary-rgb), 0.1);
+      color: white;
+      background-color: #DEAD6F;
     }
 
     .profile-sidebar .nav-link i {
@@ -93,39 +93,63 @@
                 <div class="mb-3">
                   @if(auth()->user()->profile_photo_path)
                     <img src="{{ asset('storage/' . auth()->user()->profile_photo_path) }}" 
-                         class="rounded-circle" width="100" height="100" alt="Foto de perfil">
+                         class="rounded-circle" width="100" height="100" alt="Foto de perfil"
+                         id="currentProfilePhoto">
                   @else
                     <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto" 
-                         style="width: 100px; height: 100px; font-size: 2.5rem;">
+                         style="width: 100px; height: 100px; font-size: 2.5rem;"
+                         id="currentProfilePhoto">
                       {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                     </div>
                   @endif
+                  
+                  <!-- Botones para cambiar/eliminar foto -->
+                  <form id="profilePhotoForm" class="mt-3">
+                    @csrf
+                    <div class="d-flex flex-column align-items-center">
+                      <input type="file" name="photo" id="photoInput" class="d-none" accept="image/*">
+                      <button type="button" class="btn btn-outline-primary btn-sm mb-2" onclick="document.getElementById('photoInput').click()">
+                        <i class="fas fa-camera me-1"></i> Cambiar foto
+                      </button>
+                      @if(auth()->user()->profile_photo_path)
+                        <button type="button" class="btn btn-outline-danger btn-sm" id="removePhotoBtn">
+                          <i class="fas fa-trash-alt me-1"></i> Eliminar foto
+                        </button>
+                      @endif
+                    </div>
+                  </form>
+
+                  <!-- Preview de la nueva foto -->
+                  <div id="previewContainer" class="mt-2 d-none">
+                    <img id="photoPreview" class="rounded-circle" style="width: 100px; height: 100px; object-fit: cover;">
+                  </div>
                 </div>
                 <h5 class="mb-1">{{ auth()->user()->name }}</h5>
                 <p class="text-muted mb-0">{{ auth()->user()->email }}</p>
-              </div>
-              <nav class="nav flex-column">
-                <a class="nav-link active d-flex align-items-center" href="#">
+              </div>              <nav class="nav flex-column">
+                <a class="nav-link active d-flex align-items-center" href="#info-personal">
                   <i class="fas fa-user-circle me-2"></i>
                   Información Personal
                 </a>
-                <a class="nav-link d-flex align-items-center" href="#">
+                <a class="nav-link d-flex align-items-center" href="#favoritos">
                   <i class="fas fa-heart me-2"></i>
                   Productos Favoritos
                 </a>
-                <a class="nav-link d-flex align-items-center" href="#">
+                <a class="nav-link d-flex align-items-center" href="#monitorear" id="monitorearLink">
+                  <i class="fas fa-search-dollar me-2"></i>
+                  Monitorear Producto
+                </a>
+                <a class="nav-link d-flex align-items-center" href="#alertas">
                   <i class="fas fa-bell me-2"></i>
                   Mis Alertas
                 </a>
-                <a class="nav-link d-flex align-items-center" href="#">
+                <a class="nav-link d-flex align-items-center" href="#configuracion">
                   <i class="fas fa-cog me-2"></i>
                   Configuración
                 </a>
               </nav>
             </div>
-          </div>
-
-          <!-- Estadísticas del Usuario -->
+          </div>          <!-- Estadísticas del Usuario -->
           <div class="card profile-card mt-4">
             <div class="card-body">
               <h5 class="card-title mb-4">Mis Estadísticas</h5>
@@ -151,19 +175,8 @@
 
         <!-- Contenido Principal -->
         <div class="col-lg-9">
-          <!-- Banner de Bienvenida -->
-          <div class="alert alert-banner bg-white shadow-sm mb-4">
-            <div class="d-flex align-items-center">
-              <div class="flex-grow-1">
-                <h4 class="alert-heading mb-1">¡Bienvenido de vuelta, {{ explode(' ', auth()->user()->name)[0] }}!</h4>
-                <p class="mb-0 text-muted">Mantente al día con tus productos favoritos y alertas de precios.</p>
-              </div>
-              <img src="{{ asset('images/logo.png') }}" alt="Logo" height="50">
-            </div>
-          </div>
-
           <!-- Información Personal -->
-          <div class="card profile-card mb-4">
+          <div class="card profile-card mb-4" id="info-personal">
             <div class="card-header bg-white py-3">
               <h5 class="card-title mb-0">Información Personal</h5>
             </div>
@@ -201,10 +214,8 @@
                 </div>
               </form>
             </div>
-          </div>
-
-          <!-- Productos Favoritos Recientes -->
-          <div class="card profile-card">
+          </div>          <!-- Productos Favoritos Recientes -->
+          <div class="card profile-card" id="favoritos">
             <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
               <h5 class="card-title mb-0">Productos Favoritos Recientes</h5>
               <a href="#" class="btn btn-link text-decoration-none">
@@ -246,6 +257,50 @@
               </div>
             </div>
           </div>
+
+          <!-- Contenido principal -->
+          <div class="tab-content mt-4">            
+            <!-- Sección para Monitorear Productos -->
+            <div class="card profile-card mb-4" id="monitorear">
+              <div class="card-header bg-white">
+                <h5 class="card-title mb-0">
+                  <i class="fas fa-search-dollar me-2"></i>
+                  Monitorear Nuevo Producto
+                </h5>
+              </div>
+              <div class="card-body">
+                <div class="alert alert-info alert-banner">
+                  <i class="fas fa-info-circle me-2"></i>
+                  Ingresa el ASIN del producto de Amazon que deseas monitorear. El ASIN es un código único de 10 caracteres que puedes encontrar en la URL del producto.
+                </div>
+
+                <form id="monitorProductForm" class="mt-3">
+                  <div class="mb-3">
+                    <label for="asin" class="form-label">ASIN del Producto</label>
+                    <div class="input-group">
+                      <input type="text" 
+                             class="form-control" 
+                             id="asin" 
+                             name="asin" 
+                             placeholder="Ej: B01EXAMPLE" 
+                             pattern="[A-Z0-9]{10}" 
+                             required>
+                      <button class="btn btn-primary" type="submit">
+                        <i class="fas fa-plus me-2"></i>
+                        Agregar
+                      </button>
+                    </div>
+                    <div class="form-text">
+                      El ASIN debe tener exactamente 10 caracteres alfanuméricos.
+                    </div>
+                  </div>
+                </form>
+
+                <div id="monitorResponse" class="alert d-none">
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -275,6 +330,175 @@
           this.closest('.col-md-6').remove();
         });
       });
+
+      // Formulario de monitoreo de productos
+      const monitorProductForm = document.getElementById('monitorProductForm');
+      const monitorResponse = document.getElementById('monitorResponse');
+
+      monitorProductForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const submitButton = this.querySelector('button[type="submit"]');
+        const originalButtonContent = submitButton.innerHTML;
+        submitButton.disabled = true;
+        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Agregando...';
+        
+        try {
+          const response = await fetch('/products/monitor', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify({
+              asin: this.asin.value.toUpperCase()
+            })
+          });
+
+          const data = await response.json();
+          
+          monitorResponse.classList.remove('d-none', 'alert-success', 'alert-danger');
+          
+          if (response.ok) {
+            monitorResponse.classList.add('alert-success');
+            monitorResponse.innerHTML = '<i class="fas fa-check-circle me-2"></i>' + data.message;
+            this.reset();
+          } else {
+            monitorResponse.classList.add('alert-danger');
+            monitorResponse.innerHTML = '<i class="fas fa-exclamation-circle me-2"></i>' + data.message;
+          }
+        } catch (error) {
+          monitorResponse.classList.remove('d-none');
+          monitorResponse.classList.add('alert-danger');
+          monitorResponse.innerHTML = '<i class="fas fa-exclamation-circle me-2"></i>Error al procesar la solicitud. Por favor, intenta de nuevo.';
+        } finally {
+          submitButton.disabled = false;
+          submitButton.innerHTML = originalButtonContent;
+        }
+      });      // Manejar la navegación del sidebar
+      const navLinks = document.querySelectorAll('.profile-sidebar .nav-link');
+      const allSections = document.querySelectorAll('.card[id]');
+      
+      // Función para mostrar una sección y ocultar las demás
+      function showSection(sectionId) {
+        // Ocultar todas las secciones
+        allSections.forEach(section => {
+          section.style.display = 'none';
+        });
+        
+        // Mostrar la sección seleccionada
+        const targetSection = document.querySelector(sectionId);
+        if (targetSection) {
+          targetSection.style.display = 'block';
+        }
+        
+        // Actualizar estado activo de los enlaces
+        navLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === sectionId);
+        });
+      }
+      
+      // Mostrar la sección inicial (Información Personal)
+      showSection('#info-personal');
+      
+      // Manejar clics en los enlaces del sidebar
+      navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          showSection(this.getAttribute('href'));
+        });
+      });
+
+      // Photo upload functionality
+      document.getElementById('photoInput').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            const preview = document.getElementById('photoPreview');
+            const previewContainer = document.getElementById('previewContainer');
+            preview.src = e.target.result;
+            previewContainer.classList.remove('d-none');
+            
+            // Submit the form automatically when a file is selected
+            const formData = new FormData(document.getElementById('profilePhotoForm'));
+            fetch('{{ route('user-profile-photo.store') }}', {
+              method: 'POST',
+              body: formData,
+              headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+              }
+            })
+            .then(response => response.json())
+            .then(data => {
+              if (data.success) {
+                // Update the current profile photo
+                const currentPhoto = document.getElementById('currentProfilePhoto');
+                if (currentPhoto.tagName === 'IMG') {
+                  currentPhoto.src = e.target.result;
+                } else {
+                  // Replace the initial div with an img
+                  const newImg = document.createElement('img');
+                  newImg.src = e.target.result;
+                  newImg.className = 'rounded-circle';
+                  newImg.width = 100;
+                  newImg.height = 100;
+                  newImg.alt = 'Foto de perfil';
+                  newImg.id = 'currentProfilePhoto';
+                  currentPhoto.parentNode.replaceChild(newImg, currentPhoto);
+                }
+                previewContainer.classList.add('d-none');
+                
+                // Show success message
+                toastr.success('Foto de perfil actualizada exitosamente');
+              } else {
+                toastr.error('Error al actualizar la foto de perfil');
+              }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+              toastr.error('Error al actualizar la foto de perfil');
+            });
+          }
+          reader.readAsDataURL(file);
+        }
+      });
+
+      if (document.getElementById('removePhotoBtn')) {
+        document.getElementById('removePhotoBtn').addEventListener('click', function() {
+          if (confirm('¿Estás seguro de que deseas eliminar tu foto de perfil?')) {
+            fetch('{{ route('user-profile-photo.destroy') }}', {
+              method: 'DELETE',
+              headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+              }
+            })
+            .then(response => response.json())
+            .then(data => {
+              if (data.success) {
+                // Replace img with initial div showing first letter
+                const currentPhoto = document.getElementById('currentProfilePhoto');
+                const div = document.createElement('div');
+                div.className = 'rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto';
+                div.style = 'width: 100px; height: 100px; font-size: 2.5rem;';
+                div.id = 'currentProfilePhoto';
+                div.textContent = '{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}';
+                currentPhoto.parentNode.replaceChild(div, currentPhoto);
+                
+                // Hide the remove button
+                document.getElementById('removePhotoBtn').classList.add('d-none');
+                toastr.success('Foto de perfil eliminada exitosamente');
+              } else {
+                toastr.error('Error al eliminar la foto de perfil');
+              }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+              toastr.error('Error al eliminar la foto de perfil');
+            });
+          }
+        });
+      }
     });
   </script>
 </body>

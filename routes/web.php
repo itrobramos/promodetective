@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\UserProfileController;
+use App\Http\Controllers\MonitoredProductController;
+use App\Http\Controllers\UserProfilePhotoController;
 
 // Redireccionar /login a la página principal
 Route::redirect('/login', '/', 301);
@@ -17,6 +19,11 @@ Route::get('/search', [App\Http\Controllers\SearchController::class, 'search'])-
 Route::middleware(['auth'])->group(function () {
     Route::get('/user/profile', [UserProfileController::class, 'show'])->name('profile.show');
     Route::put('/user/profile', [UserProfileController::class, 'update'])->name('profile.update');
+    Route::post('/products/monitor', [MonitoredProductController::class, 'store'])->name('products.monitor');
+    
+    // User Profile Photo Routes
+    Route::post('/user/profile-photo', [UserProfilePhotoController::class, 'store'])->name('user-profile-photo.store');
+    Route::delete('/user/profile-photo', [UserProfilePhotoController::class, 'destroy'])->name('user-profile-photo.destroy');
 });
 
 // Google OAuth Routes
