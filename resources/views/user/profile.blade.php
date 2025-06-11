@@ -53,10 +53,28 @@
 
     .stats-card {
       transition: transform 0.3s ease;
+    }    .stats-card:hover {
+      transform: translateY(-5px);
     }
 
-    .stats-card:hover {
-      transform: translateY(-5px);
+    .profile-section .mb-3 img,
+    .profile-section .mb-3 .rounded-circle {
+      width: 150px !important;
+      height: 150px !important;
+      margin: 0 auto;
+    }
+
+    .profile-section .mb-3 {
+      margin-bottom: 1.5rem !important;
+    }
+
+    .profile-photo-container {
+      position: relative;
+      display: inline-block;
+    }
+
+    .profile-photo-actions {
+      margin-top: 1rem;
     }
   </style>
 </head>
@@ -81,17 +99,12 @@
       </div>
     </div>
   </section>
-
   <section class="profile-section py-5">
     <div class="container">
-      <div class="row">
-        <!-- Sidebar -->
-        <div class="col-lg-3 mb-4">
-          <div class="profile-sidebar card profile-card">
-            <div class="card-body">
-              <div class="text-center mb-4">
-                <div class="mb-3">
-                  @if(auth()->user()->profile_photo_path)
+      <!-- Información del perfil -->
+      <div class="text-center mb-4">
+        <div class="mb-3">
+          @if(auth()->user()->profile_photo_path)
                     <img src="{{ asset('storage/' . auth()->user()->profile_photo_path) }}" 
                          class="rounded-circle" width="100" height="100" alt="Foto de perfil"
                          id="currentProfilePhoto">
@@ -122,11 +135,17 @@
                   <!-- Preview de la nueva foto -->
                   <div id="previewContainer" class="mt-2 d-none">
                     <img id="photoPreview" class="rounded-circle" style="width: 100px; height: 100px; object-fit: cover;">
-                  </div>
-                </div>
+                  </div>                </div>
                 <h5 class="mb-1">{{ auth()->user()->name }}</h5>
                 <p class="text-muted mb-0">{{ auth()->user()->email }}</p>
-              </div>              <nav class="nav flex-column">
+      </div>
+
+      <div class="row mt-4">
+        <!-- Sidebar -->
+        <div class="col-lg-3 mb-4">
+          <div class="profile-sidebar card profile-card">
+            <div class="card-body">
+              <nav class="nav flex-column">
                 <a class="nav-link active d-flex align-items-center" href="#info-personal">
                   <i class="fas fa-user-circle me-2"></i>
                   Información Personal
