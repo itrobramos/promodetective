@@ -97,13 +97,12 @@
           </nav>
         </div>
       </div>
-    </div>
-  </section>
-  <section class="profile-section py-5">
+    </div>  </section>
+  <section class="profile-section pt-1 pb-3">
     <div class="container">
       <!-- Información del perfil -->
       <div class="text-center mb-4">
-        <div class="mb-3">          @if(auth()->user()->profile_photo_path)
+        <div class="mb-3">@if(auth()->user()->profile_photo_path)
                     <img src="{{ asset('storage/' . auth()->user()->profile_photo_path) }}" 
                          class="rounded-circle" width="100" height="100" alt="Foto de perfil"
                          id="currentProfilePhoto"                         onerror="this.onerror=null; const initial = '{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}'; this.style.display='none'; this.insertAdjacentHTML('afterend', `<div class='rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto' style='width: 100px; height: 100px; font-size: 2.5rem;' id='currentProfilePhoto'>${initial}</div>`); document.getElementById('removePhotoBtn')?.classList.add('d-none');">
