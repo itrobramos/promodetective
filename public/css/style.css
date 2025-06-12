@@ -739,10 +739,13 @@ Single Product section style start
 }
 
 
-.imgProduct{
-  padding-top:20px;
+.imgProduct {
+  padding-top: 20px;
   min-height: 300px;
   height: 300px;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
 }
 
 
