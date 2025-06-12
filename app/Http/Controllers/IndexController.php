@@ -51,23 +51,18 @@ class IndexController extends Controller
     {
         $category = Category::where('name', $name)->first();
         $orderBy = $request->input('order', 'likes'); // default order by likes
-        $subcategories = Category::where('parent_category_id', $category->id)
-            ->get()
-            ->map(function($subcategory) {
-                $subcategory->products_count = $subcategory->categoryProducts()->count();
-                return $subcategory;
-            });
+        // Get all subcategories recursively
+        $category->load('allChildCategories');
+        $subcategories = $category->allChildCategories;
+        
+        // Map subcategories to include product count
+        $subcategories = $subcategories->map(function($subcategory) {
+            $subcategory->products_count = $subcategory->getAllProductsRecursive()->count();
+            return $subcategory;
+        });
 
-        // Get products from main category and subcategories
-        $products = collect();
-        
-        // Add products from main category
-        $products = $products->concat($category->categoryProducts);
-        
-        // Add products from subcategories
-        foreach ($subcategories as $subcategory) {
-            $products = $products->concat($subcategory->categoryProducts);
-        }
+        // Get all products recursively including from all nested subcategories
+        $products = $category->getAllProductsRecursive();
         
         // Apply price range filters if they exist
         $minPrice = $request->input('min_price');

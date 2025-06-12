@@ -32,4 +32,25 @@ class Category extends Model
                                 ->where('status', '=', 1)
                                 ->whereColumn('last_price', '<', 'price_goal');  
     }
+
+    public function childCategories()
+    {
+        return $this->hasMany(Category::class, 'parent_category_id');
+    }
+
+    public function allChildCategories()
+    {
+        return $this->childCategories()->with('allChildCategories');
+    }
+
+    public function getAllProductsRecursive()
+    {
+        $products = $this->categoryProducts;
+
+        foreach ($this->allChildCategories as $childCategory) {
+            $products = $products->concat($childCategory->getAllProductsRecursive());
+        }
+
+        return $products;
+    }
 }
