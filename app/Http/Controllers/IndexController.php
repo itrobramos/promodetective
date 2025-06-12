@@ -179,7 +179,7 @@ class IndexController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Gracias por tu reporte, validaremos el precio tan pronto como podamos'
+            'message' => '¡Gracias por tu reporte! Revisaremos el precio lo antes posible. Tu ayuda nos permite mantener los precios actualizados.'
         ]);
     }
 }
