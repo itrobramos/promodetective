@@ -168,4 +168,18 @@ class IndexController extends Controller
             'has_liked' => false
         ]);
     }
+
+    public function reportProduct($id)
+    {
+         \DB::table('products')
+            ->where('id', $id)
+            ->update([
+                'updated_at' => '2000-01-01 00:00:00'
+            ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Gracias por tu reporte, validaremos el precio tan pronto como podamos'
+        ]);
+    }
 }

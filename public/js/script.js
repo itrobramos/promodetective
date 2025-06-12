@@ -101,7 +101,6 @@
     });
 
   }
-
   // init jarallax parallax
   var initJarallax = function() {
     jarallax(document.querySelectorAll(".jarallax"));
@@ -111,9 +110,15 @@
     });
   }
 
+  // init tooltips
+  var initTooltips = function() {
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+  }
   // document ready
   $(document).ready(function() {
-    
     initPreloader();
     initSwiper();
     initProductQty();
@@ -330,6 +335,75 @@
             }
         });
     });
+  });
+  // Manejar clicks en botones de reporte
+var initReportButtons = function() {
+    // Primero remover los event listeners existentes para evitar duplicados
+    document.querySelectorAll('.report-button').forEach(button => {
+        const clone = button.cloneNode(true);
+        button.parentNode.replaceChild(clone, button);
+    });
+
+    // Agregar los nuevos event listeners
+    document.querySelectorAll('.report-button').forEach(button => {
+        button.addEventListener('click', function() {
+            const productId = this.dataset.productId;
+            
+            // Deshabilitar el botón y mostrar spinner
+            this.disabled = true;
+            const originalHtml = this.innerHTML;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+            // Ocultar el tooltip si está visible
+            const tooltip = bootstrap.Tooltip.getInstance(this);
+            if (tooltip) {
+                tooltip.hide();
+            }
+
+            fetch(`/products/${productId}/report`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Mostrar mensaje de éxito usando toastr
+                    toastr.success(data.message);
+                    
+                    // Actualizar el botón
+                    this.innerHTML = '<i class="fas fa-check"></i>';
+                    this.classList.remove('btn-outline-warning');
+                    this.classList.add('btn-success');
+                    this.setAttribute('title', 'Reporte enviado');
+                    
+                    // Reinicializar el tooltip con el nuevo título
+                    if (tooltip) {
+                        tooltip.dispose();
+                    }
+                    new bootstrap.Tooltip(this);
+                } else {
+                    throw new Error(data.message || 'Error al reportar el producto');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                toastr.error('Error al enviar el reporte. Por favor intenta de nuevo.');
+                this.disabled = false;
+                this.innerHTML = originalHtml;
+            });
+        });
+    });
+};
+
+  // Initialize tooltips and report buttons
+  document.addEventListener('DOMContentLoaded', function() {
+    // Asegurarse de que los tooltips se inicialicen primero
+    initTooltips();
+    // Luego inicializar los botones de reporte
+    initReportButtons();
   });
 
 })(jQuery);

@@ -14,6 +14,7 @@ Route::get('/categoria/{name}', [IndexController::class, 'categoryOffers'])->nam
 Route::post('/product/like/{id}', [IndexController::class, 'likeProduct'])->name('product.like')->middleware('auth');
 Route::delete('/product/like/{id}', [IndexController::class, 'unlikeProduct'])->name('product.unlike')->middleware('auth');
 Route::get('/search', [App\Http\Controllers\SearchController::class, 'search'])->name('search');
+Route::post('/products/{id}/report', [IndexController::class, 'reportProduct'])->name('report.product');
 
 // Rutas de perfil de usuario
 Route::middleware(['auth'])->group(function () {

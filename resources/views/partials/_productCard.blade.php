@@ -46,17 +46,24 @@
                         data-bs-placement="top"
                         title="Ver gráfica de precios">
                     <i class="fas fa-chart-bar"></i>
+                </button>                <button class="btn btn-outline-secondary btn-sm rounded-circle p-0 d-flex align-items-center justify-content-center share-button" 
+                        style="width: 35px; height: 35px;"
+                        data-url="{{$product['affiliate_url']}}" 
+                        data-title="{{$product['friendly_name']}}"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        title="Compartir producto">
+                    <iconify-icon class="share-icon" icon="mdi:share"></iconify-icon>
                 </button>
-                <button class="btn btn-outline-secondary btn-sm rounded-circle p-0 d-flex align-items-center justify-content-center share-button" 
-                            style="width: 35px; height: 35px;"
-                            data-url="{{$product['affiliate_url']}}" 
-                            data-title="{{$product['friendly_name']}}"
-                            data-bs-toggle="tooltip"
-                            data-bs-placement="top"
-                            title="Compartir producto">
-                        <iconify-icon class="share-icon" icon="mdi:share"></iconify-icon>
-                    </button>
-                </div>
+                <button class="btn btn-outline-warning btn-sm rounded-circle p-0 d-flex align-items-center justify-content-center report-button" 
+                        style="width: 35px; height: 35px;"
+                        data-product-id="{{$product['id']}}"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        title="Reportar precio incorrecto">
+                    <i class="fas fa-flag"></i>
+                </button>
+            </div>
             </div>
             <div class="d-grid">
                 <a href="{{$product['affiliate_url']}}" target="_blank" class="btn py-3" style="background-color: #DEAD6F; border-color: #DEAD6F; color: white;">
