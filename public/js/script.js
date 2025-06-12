@@ -367,11 +367,21 @@ var initReportButtons = function() {
                     'Accept': 'application/json'
                 }
             })
-            .then(response => response.json())
-            .then(data => {
+            .then(response => response.json())            .then(data => {
                 if (data.success) {
-                    // Mostrar mensaje de éxito usando toastr
-                    toastr.success(data.message);
+                    // Mostrar mensaje de éxito usando SweetAlert2
+                    Swal.fire({
+                        title: '¡Gracias por tu reporte!',
+                        text: data.message,
+                        icon: 'success',
+                        confirmButtonText: 'Entendido',
+                        confirmButtonColor: '#28a745',
+                        timer: 5000,
+                        timerProgressBar: true,
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false
+                    });
                     
                     // Actualizar el botón
                     this.innerHTML = '<i class="fas fa-check"></i>';
@@ -387,10 +397,20 @@ var initReportButtons = function() {
                 } else {
                     throw new Error(data.message || 'Error al reportar el producto');
                 }
-            })
-            .catch(error => {
+            })            .catch(error => {
                 console.error('Error:', error);
-                toastr.error('Error al enviar el reporte. Por favor intenta de nuevo.');
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Error al enviar el reporte. Por favor intenta de nuevo.',
+                    icon: 'error',
+                    confirmButtonText: 'Cerrar',
+                    confirmButtonColor: '#dc3545',
+                    timer: 3000,
+                    timerProgressBar: true,
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false
+                });
                 this.disabled = false;
                 this.innerHTML = originalHtml;
             });

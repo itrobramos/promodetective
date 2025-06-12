@@ -18,12 +18,9 @@
         <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/js/adminlte.min.js"></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/css/adminlte.min.css">
         
-        <link rel="stylesheet" href="vendor\almasaeed2010\adminlte\plugins\chart.js\Chart.css">
-
-
-        <!-- Scripts -->
+        <link rel="stylesheet" href="vendor\almasaeed2010\adminlte\plugins\chart.js\Chart.css">        <!-- Scripts -->
         <script src="{{asset('js/app.js')}}"></script>
-        <script src="vendor\almasaeed2010\adminlte\plugins\chart.js\Chart.js"></script>
+        <script src="vendor\almasaeed2010\adminlte\plugins\chart.js\Chart.js"></script>"></script>
         @livewireStyles
     </head>
     <body class="font-sans antialiased">

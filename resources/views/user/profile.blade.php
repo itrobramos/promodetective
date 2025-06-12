@@ -329,6 +329,7 @@
   <script src="{{asset('js/plugins.js')}}"></script>
   <script src="{{asset('js/script.js')}}"></script>
   <script src="{{asset('js/iconify.js')}}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       // Manejar el envío del formulario
