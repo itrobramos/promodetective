@@ -227,11 +227,14 @@
   <script src="{{asset('js/bootstrap.bundle.js')}}"></script>
   <script src="{{asset('js/plugins.js')}}"></script>
   <script src="{{asset('js/script.js')}}"></script>
-  <script src="{{asset('js/iconify.js')}}"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+  <script src="{{asset('js/iconify.js')}}"></script>  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
+      // Inicializar todos los tooltips
+      const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+      const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+      });
         // Manejo del ordenamiento
         const orderSelect = document.getElementById('orderSelect');
         const applyFilters = document.getElementById('applyFilters');
