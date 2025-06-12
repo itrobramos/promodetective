@@ -10,7 +10,7 @@ class IndexController extends Controller
 {
     public function index(Request $request)
     {
-        $categories = Category::where('parent_category_id', null)->where('active', 1)->get();
+        $categories = Category::where('parent_category_id', null)->where('active', 1)->orderBy('name')->get();
         $result = [];
 
         foreach ($categories as $category) {
