@@ -11,26 +11,19 @@ class IndexController extends Controller
     public function index(Request $request)
     {
         $categories = Category::where('parent_category_id', null)->where('active', 1)->get();
-        $orderBy = $request->input('order', 'likes'); // default order by likes
-
         $result = [];
 
         foreach ($categories as $category) {
             // Get products from main category and subcategories
-            $products = collect();
-            
-            // Add products from main category
-            $products = $products->concat($category->offerProducts);
-            
+            $products = $category->getAllProductsRecursive();
+            $products = $products->sortByDesc('likes');
             // Get and add products from subcategories
             $subcategories = Category::where('parent_category_id', $category->id)->get();
-            foreach ($subcategories as $subcategory) {
-                $products = $products->concat($subcategory->offerProducts);
-            }
             $result[$category->name] = $products->map(function ($product) {
                 return [
                     'id' => $product->id,
                     'friendly_name' => $product->friendly_name,
+                    'price_goal' => $product->price_goal,
                     'affiliate_url' => $product->affiliate_url,
                     'categoria_id' => $product->category_id,
                     'last_price' => $product->last_price,
