@@ -297,6 +297,13 @@ a {
   font-weight: 300;
 }
 
+/* Aplicación global de fuente Open Sans */
+body,
+h1, h2, h3, h4, h5, h6,
+p, span, a, button, input, select, textarea {
+    font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !important;
+}
+
 /*----------------------------------------------*/
 /* 6. SITE STRUCTURE */
 /*----------------------------------------------*/
