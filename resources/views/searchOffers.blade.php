@@ -120,10 +120,9 @@
                         @include('partials._productCard', ['product' => $product])
                     @endforeach
                 </div>
-                
-                <!-- Pagination -->
+                  <!-- Pagination -->
                 <div class="d-flex justify-content-center mt-5">
-                    {{ $products->links('vendor.pagination.custom') }}
+                    {{ $products->appends(request()->query())->links('vendor.pagination.custom') }}
                 </div>
             </div>
         </div>
@@ -212,6 +211,36 @@
 <script src="{{asset('js/script.js')}}"></script>
 <script src="{{asset('js/iconify.js')}}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.all.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    $('#applyFilters').click(function() {
+        var currentUrl = new URL(window.location.href);
+        var searchParams = currentUrl.searchParams;
+        
+        // Actualizar parámetros
+        var minPrice = $('#minPrice').val();
+        var maxPrice = $('#maxPrice').val();
+        var order = $('#orderSelect').val();
+        
+        if (minPrice) searchParams.set('min_price', minPrice);
+        else searchParams.delete('min_price');
+        
+        if (maxPrice) searchParams.set('max_price', maxPrice);
+        else searchParams.delete('max_price');
+        
+        if (order) searchParams.set('order', order);
+        else searchParams.delete('order');
+        
+        // Mantener el parámetro de búsqueda
+        if (!searchParams.has('query')) {
+            searchParams.set('query', '{{ $query }}');
+        }
+        
+        window.location.href = currentUrl.toString();
+    });
+});
+</script>
 
 </body>
 </html>
