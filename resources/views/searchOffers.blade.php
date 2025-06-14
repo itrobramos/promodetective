@@ -11,22 +11,22 @@
   <meta name="author" content="">
   <meta name="keywords" content="">
   <meta name="description" content="">
-  
+
   <link href="{{asset('css/swiper.css')}}" rel="stylesheet">
   <link href="{{asset('css/bootstrap.css')}}" rel="stylesheet">
   <link href="{{asset('css/vendor.css')}}" rel="stylesheet">
   <link href="{{asset('css/style.css')}}" rel="stylesheet">
-  
+  <link href="{{asset('css/pagination.css')}}" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Chilanka&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.min.css">
   <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
 <body>
-  
-   @include('partials._preloader')
+  @include('partials._preloader')
 
   @include('partials._header')
 
@@ -45,11 +45,7 @@
       </div>
     </div>
   </section>
-  
-  {{-- @include('partials._categories', ['categories' => $categories])
-  
-  @include('partials._productCategory', ['result' => $result]) --}}
-  
+
   @if($products->isEmpty())
   <div class="alert alert-info">
     No se encontraron productos que coincidan con tu búsqueda.
@@ -78,70 +74,63 @@
 </section>
 
 <section class="products-grid py-5">
-  <div class="container">
-      <div class="row g-4">
-          @foreach($products as $product)
-          <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
-              <div class="card product-card h-100 border rounded-3 shadow-sm">
-                  <div class="position-relative">
-                      <div class="price-badges position-absolute top-0 start-0 m-3 d-flex flex-column gap-2">
-                          @if($product['is_lowest_price'] ?? false)
-                          <div class="badge bg-success px-2 py-1">
-                              <i class="fas fa-crown"></i> Mejor precio histórico
-                          </div>
-                          @elseif ($product['is_best_price_30_days'] ?? false)
-                          <div class="badge bg-primary px-2 py-1">
-                              <i class="fas fa-clock"></i> Mejor precio en 30 días
-                          </div>
-                          @elseif ($product['last_price'] < $product['price_goal'] ?? false)
-                          <div class="badge bg-danger px-2 py-1">
-                              <i class="fas fa-fire"></i> Buen precio
-                          </div>
-                          @else
-                          <div class="badge bg-dark px-2 py-1">
-                              <i class="fas fa-xmark"></i> No es una oferta
-                          </div>
-                          @endif
-                      </div>
-                      <button class="btn-like position-absolute top-0 end-0 m-3 bg-white rounded-circle border-0 shadow-sm" 
-                              data-product-id="{{$product['id']}}" 
-                              data-likes="{{$product['likes'] ?? 0}}">
-                          <i class="fas fa-heart"></i>
-                          <span class="likes-count">{{$product['likes'] ?? 0}}</span>
-                      </button>
-                      <a href="{{$product['affiliate_url']}}" target="_blank">
-                          <img src="{{$product['image_url']}}" class="card-img-top p-3 imgProduct" alt="{{$product['friendly_name']}}">
-                      </a>
-                  </div>
-                  <div class="card-body d-flex flex-column">
-                      <a href="{{$product['affiliate_url']}}" target="_blank" class="text-decoration-none">
-                          <h5 class="card-title text-dark">{{$product['friendly_name']}}</h5>
-                      </a>
-                      <div class="d-flex justify-content-between align-items-center mt-3">
-                          <h4 class="text-primary mb-0">${{$product['last_price']}}</h4>
-                          <button class="btn btn-primary rounded-2 d-flex align-items-center gap-2 openModalBtn" data-asin="{{$product['asin']}}">
-                              <i class="fas fa-chart-bar"></i>
-                              <span></span>
-                          </button>
-                      </div>
-                      <div class="d-flex gap-2 mt-3">
-                          <a href="{{$product['affiliate_url']}}" target="_blank" class="btn btn-outline-primary flex-grow-1">
-                              Ver en Amazon
-                          </a>
-                          <button class="btn btn-outline-secondary share-button" 
-                                  data-url="{{$product['affiliate_url']}}" 
-                                  data-title="{{$product['friendly_name']}}"
-                                  title="Compartir producto">
-                              <i class="fas fa-share-alt"></i>
-                          </button>
-                      </div>
-                  </div>
-              </div>
-          </div>
-          @endforeach
-      </div>
-  </div>
+    <div class="container">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-3 mb-4">
+                <!-- Filtros -->
+                <div class="card border-0 shadow-sm mt-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title mb-0">Filtros</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Rango de Precio</label>
+                            <div class="d-flex align-items-center gap-2">
+                                <input type="number" id="minPrice" class="form-control" placeholder="Min" value="{{ request('min_price') }}">
+                                <span>-</span>
+                                <input type="number" id="maxPrice" class="form-control" placeholder="Max" value="{{ request('max_price') }}">
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Ordenar por</label>
+                            <select class="form-select" id="orderSelect">
+                                <option value="likes">Más relevantes</option>
+                                <option value="price_asc" {{ request('order') == 'price_asc' ? 'selected' : '' }}>Menor precio</option>
+                                <option value="price_desc" {{ request('order') == 'price_desc' ? 'selected' : '' }}>Mayor precio</option>
+                                <option value="name_asc" {{ request('order') == 'name_asc' ? 'selected' : '' }}>Nombre A - Z</option>
+                                <option value="name_desc" {{ request('order') == 'name_desc' ? 'selected' : '' }}>Nombre Z - A</option>
+                            </select>
+                        </div>
+
+                        <button class="btn btn-outline-primary w-100 rounded-pill d-flex align-items-center justify-content-center gap-2" 
+                                id="applyFilters">
+                            <i class="fas fa-filter"></i>
+                            <span>Aplicar filtros</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Products Grid -->
+            <div class="col-lg-9">
+                <div class="row g-4">
+                    @foreach($products as $product)
+                        @include('partials._productCard', ['product' => $product])
+                    @endforeach
+                </div>
+                
+                <!-- Pagination -->
+                <div class="d-flex justify-content-center mt-5">
+                    {{ $products->links('vendor.pagination.custom') }}
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
+
+<x-price-chart-modal />
 
 
 @endif
@@ -214,128 +203,15 @@
   </div>
 </section>
 
+@include('partials._footer')
 
-<footer id="footer" class="my-5">
-  <div class="container py-5 my-5">
-    <div class="row">
-      <div class="col-md-3">
-        <div class="footer-menu">
-          <img src="{{asset('images/logo.png')}}" alt="logo">
-          <p class="blog-paragraph fs-6 mt-3">Subscribe to our newsletter to get updates about our grand offers.</p>
-          <div class="social-links">
-            <ul class="d-flex list-unstyled gap-2">
-              <li class="social">
-                <a href="#">
-                  <iconify-icon class="social-icon" icon="ri:facebook-fill"></iconify-icon>
-                </a>
-              </li>
-              <li class="social">
-                <a href="#">
-                  <iconify-icon class="social-icon" icon="ri:twitter-fill"></iconify-icon>
-                </a>
-              </li>
-              <li class="social">
-                <a href="#">
-                  <iconify-icon class="social-icon" icon="ri:pinterest-fill"></iconify-icon>
-                </a>
-              </li>
-              <li class="social">
-                <a href="#">
-                  <iconify-icon class="social-icon" icon="ri:instagram-fill"></iconify-icon>
-                </a>
-              </li>
-              <li class="social">
-                <a href="#">
-                  <iconify-icon class="social-icon" icon="ri:youtube-fill"></iconify-icon>
-                </a>
-              </li>
-              
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="footer-menu">
-          <h3>Quick Links</h3>
-          <ul class="menu-list list-unstyled">
-            <li class="menu-item">
-              <a href="#" class="nav-link">Home</a>
-            </li>
-            <li class="menu-item">
-              <a href="#" class="nav-link">About us</a>
-            </li>
-            <li class="menu-item">
-              <a href="#" class="nav-link">Offer </a>
-            </li>
-            <li class="menu-item">
-              <a href="#" class="nav-link">Services</a>
-            </li>
-            <li class="menu-item">
-              <a href="#" class="nav-link">Conatct Us</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="footer-menu">
-          <h3>Help Center</h5>
-            <ul class="menu-list list-unstyled">
-              <li class="menu-item">
-                <a href="#" class="nav-link">FAQs</a>
-              </li>
-              <li class="menu-item">
-                <a href="#" class="nav-link">Payment</a>
-              </li>
-              <li class="menu-item">
-                <a href="#" class="nav-link">Returns & Refunds</a>
-              </li>
-              <li class="menu-item">
-                <a href="#" class="nav-link">Checkout</a>
-              </li>
-              <li class="menu-item">
-                <a href="#" class="nav-link">Delivery Information</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div>
-            <h3>Our Newsletter</h3>
-            <p class="blog-paragraph fs-6">Subscribe to our newsletter to get updates about our grand offers.</p>
-            <div class="search-bar border rounded-pill border-dark-subtle px-2">
-              <form class="text-center d-flex align-items-center" action="" method="">
-                <input type="text" class="form-control border-0 bg-transparent" placeholder="Enter your email here" />
-                <iconify-icon class="send-icon" icon="tabler:location-filled"></iconify-icon>
-              </form>
-            </div>
-          </div>
-        </div>
-        
-      </div>
-    </div>
-  </footer>
-  
-  <div id="footer-bottom">
-    <div class="container">
-      <hr class="m-0">
-      <div class="row mt-3">
-        <div class="col-md-6 copyright">
-          <p class="secondary-font">© 2023 Waggy. All rights reserved.</p>
-        </div>
-        <div class="col-md-6 text-md-end">
-          <p class="secondary-font">Free HTML Template by <a href="https://templatesjungle.com/" target="_blank"
-            class="text-decoration-underline fw-bold text-black-50"> TemplatesJungle</a> </p>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <script src="{{asset('js/jquery-1.11.0.min.js')}}"></script>
-    <script src="{{asset('js/swiper.js')}}"></script>
-    <script src="{{asset('js/bootstrap.bundle.js')}}"></script>
-    <script src="{{asset('js/plugins.js')}}"></script>
-    <script src="{{asset('js/script.js')}}"></script>
-    <script src="{{asset('js/iconify.js')}}"></script>
-  </body>
-  
-  </html>
+<script src="{{asset('js/jquery-1.11.0.min.js')}}"></script>
+<script src="{{asset('js/swiper.js')}}"></script>
+<script src="{{asset('js/bootstrap.bundle.js')}}"></script>
+<script src="{{asset('js/plugins.js')}}"></script>
+<script src="{{asset('js/script.js')}}"></script>
+<script src="{{asset('js/iconify.js')}}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.all.min.js"></script>
+
+</body>
+</html>
