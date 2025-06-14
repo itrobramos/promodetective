@@ -1,4 +1,4 @@
-<section id="clothing" class="my-5 overflow-hidden">
+<section class="my-5 overflow-hidden">
     <div class="container pb-5">
 
 
@@ -8,7 +8,7 @@
             @endif
 
             <div class="section-header d-md-flex justify-content-between align-items-center mb-3">
-                <h2 class="display-3 fw-normal">{{ $category }}</h2>
+                <h2 class="display-5 fw-normal">{{ $category }}</h2>
                 <div>
                     <a href="{{route('categoryOffers', ['name' => $category])}}" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1">
                         Ver más

@@ -126,7 +126,7 @@
                 <div class="row justify-content-center">
                   <div class="col-md-6 p-5 banner-content-box">
                     <div class="secondary-font text-primary text-uppercase mb-4 fw-bold">Ofertas exclusivas</div>
-                    <h2 class="banner-title display-1 fw-normal mb-4">Las mejores ofertas en  <span class="text-primary">{{ $category->name }}</span></h2>
+                    <h2 class="banner-title display-5 fw-normal mb-4">Las mejores ofertas en  <span class="text-primary">{{ $category->name }}</span></h2>
                     <a href="{{route('categoryOffers', ['name' => $category->name ])}}" class="btn btn-primary discover-btn">
                       Descubrir
                       <i class="fas fa-arrow-right arrow-icon"></i>
